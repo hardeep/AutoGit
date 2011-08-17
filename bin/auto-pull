@@ -1,0 +1,91 @@
+#! /usr/bin/php
+<?php
+
+error_reporting(E_ALL);
+
+# this is magic so we don't have includes
+$base_dir = dirname(dirname(__file__));
+define('BASE_DIR', $base_dir);
+
+include BASE_DIR."/libs/classes/AutoLoader.class.php";
+
+$libs = array(
+    BASE_DIR.'/libs',
+    BASE_DIR.'/libs/classes'
+);
+
+define('DOCS_DIR', BASE_DIR."/docs");
+
+$autoloader = new AutoLoader();
+$autoloader->registerLibraries($libs);
+
+#some magic for options
+
+$valid_options = array (
+    'f' => "file:"
+);
+
+$options = new GetOpts($valid_options, $argv);
+
+if (($invalid = $options->check_args(array('file')))!== true)
+{
+    echo 'arguments required: '.join(" ",$invalid)."\n\n";
+    die();
+}
+
+# end of magic ;)
+
+# just a object I wrote to help with this task
+$git_repos = new Git();
+
+$config = $options->query('file');
+
+foreach ($config as $file)
+{
+    # just return json data gross @todo refactor
+    try
+    {
+        $repos = load_from_json($file);
+    }
+    catch(Exception $e)
+    {
+        try
+        {
+            $repos = load_from_json(BASE_DIR."/json/".$file);
+        }
+        catch(Exception $e)
+        {
+            try
+            {
+                $repos = load_from_json(BASE_DIR."/json/".$file.".json");
+            }
+            catch(Exception $e)
+            {
+                echo "could not find file in\n".getcwd()."\n".BASE_DIR."/json\n";
+            }
+        }
+    }
+
+    chdir(BASE_DIR.'/tmp');
+
+    #clone all my repos
+    foreach ($repos as $repo => $info)
+    {
+        $git_repos->add_repo($repo)
+                  ->select_repo($repo)
+                  ->clone_repo($info['repo_url'])
+                  ->remote_add($info['repo_name'], $info['repo_url'])
+    }
+
+    chdir(BASE_DIR);
+}
+
+# a helper function for loading a json file
+function load_from_json($location)
+{
+    if (!file_exists($location)) throw new Exception("file not found");
+    $json = file_get_contents($location); 
+    $temp = json_decode($json, true);
+    if (!is_array($temp)) throw new Exception("invalid json file");
+    return $temp;
+}
