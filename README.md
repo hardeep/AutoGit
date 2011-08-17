@@ -7,11 +7,11 @@ When specifying a file name it will first look in the specified; if not found th
 
 All 3 commands will produce the same result
 
-`
+```bash
 bin/auto-merge -f json/file1 json/file2
 bin/auto-merge -f file1.json file2.json
 bin/auto-merge -f file1 file2
-`
+```
 
 ##Merging Branches
 
@@ -23,11 +23,13 @@ Paramters:
 
 This will clone both branches merge then and push them back up to the repo
 
-`bin/auto-merge -f file1 file2 file3 file4`
+```bash
+bin/auto-merge -f file1 file2 file3 file4
+```
 
 
 ##Example json file
-`
+```bash
 {
     "project-name":{
         "repo_name":"self",
@@ -38,4 +40,4 @@ This will clone both branches merge then and push them back up to the repo
         "remote_branch":"master"
     }
 }
-`
+````
