@@ -1,4 +1,5 @@
-#AutoGit is a set of tools designed to help automate git tasks (merging, submodules, etc)
+#AutoGit
+A set of tools designed to help automate git tasks (merging, submodules, etc)
 
 #Notes
 
@@ -6,9 +7,11 @@ When specifying a file name it will first look in the specified; if not found th
 
 All 3 commands will produce the same result
 
-ex: bin/auto-merge -f json/file1 json/file2
-ex: bin/auto-merge -f file1.json file2.json
-ex: bin/auto-merge -f file1 file2
+`
+bin/auto-merge -f json/file1 json/file2
+bin/auto-merge -f file1.json file2.json
+bin/auto-merge -f file1 file2
+`
 
 ##Merging Branches
 
@@ -20,11 +23,11 @@ Paramters:
 
 This will clone both branches merge then and push them back up to the repo
 
-ex: bin/auto-merge -f file1 file2 file3 file4
+`bin/auto-merge -f file1 file2 file3 file4`
 
 
 ##Example json file
-
+`
 {
     "project-name":{
         "repo_name":"self",
@@ -35,3 +38,4 @@ ex: bin/auto-merge -f file1 file2 file3 file4
         "remote_branch":"master"
     }
 }
+`
