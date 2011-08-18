@@ -18,8 +18,10 @@ bin/auto-merge -f file1 file2
 ### bin/auto-merge
 
 Paramters:
+```bash
     -f : --file     specifies the json to read
     -n : --no-push  will clone and merge but no push will be made
+```
 
 This will clone both branches merge then and push them back up to the repo
 
